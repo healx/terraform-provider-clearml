@@ -2,6 +2,7 @@ package provider
 
 import (
 	"testing"
+	"os"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -10,7 +11,7 @@ import (
 // The factory function will be invoked for every Terraform CLI command executed
 // to create a provider server to which the CLI can reattach.
 var providerFactories = map[string]func() (*schema.Provider, error){
-	"scaffolding": func() (*schema.Provider, error) {
+	"clearml": func() (*schema.Provider, error) {
 		return New("dev")(), nil
 	},
 }
@@ -22,7 +23,15 @@ func TestProvider(t *testing.T) {
 }
 
 func testAccPreCheck(t *testing.T) {
-	// You can add code here to run prior to any test case execution, for example assertions
-	// about the appropriate environment variables being set are common to see in a pre-check
-	// function.
+	if v := os.Getenv("TF_ACC"); v != "1" {
+		t.Skip("TF_ACC=1 must be set to run acceptance tests")
+	}
+
+	if v := os.Getenv("CLEARML_ACCESS_KEY"); v == "" {
+		t.Fatal("CLEARML_ACCESS_KEY must be set for acceptance tests")
+	}
+
+	if v := os.Getenv("CLEARML_SECRET_KEY"); v == "" {
+		t.Fatal("CLEARML_SECRET_KEY must be set for acceptance tests")
+	}
 }
