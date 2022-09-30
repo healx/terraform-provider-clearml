@@ -38,4 +38,10 @@ resource "clearml_queue" "example_with_tags" {
 
 - `id` (String) The ID of this resource.
 
+## Import
 
+Import is supported using the following syntax:
+
+```shell
+terraform import clearml_queue.example acbd18db4cc2f85cedef654fccc4a4d8
+```

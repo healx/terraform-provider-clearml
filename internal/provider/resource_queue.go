@@ -18,6 +18,10 @@ func resourceQueue() *schema.Resource {
 		UpdateContext: resourceQueueUpdate,
 		DeleteContext: resourceQueueDelete,
 
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
+
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Description: "The name of the queue.",
